@@ -9,7 +9,7 @@ export default function Inicio() {
         alignItems: "center",
       }}
     >
-      <Text>Um pouco sobre a construção da página</Text>
+      <Text>Um pouco da nossa história!</Text>
     </View>
   );
 }
