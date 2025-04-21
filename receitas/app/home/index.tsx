@@ -1,13 +1,11 @@
-"use client"
-
-import { useState } from "react"
+import React, { useState } from "react"
 import { View, Text, Image, ScrollView, TouchableOpacity, StyleSheet, SafeAreaView, StatusBar } from "react-native"
 import { Feather, AntDesign } from "@expo/vector-icons"
 
-export default function RecipeSocialApp() {
-  const [expandedRecipes, setExpandedRecipes] = useState({})
+export default function Home() {
+  const [expandedRecipes, setExpandedRecipes] = useState<Record<number, boolean>>({})
 
-  const toggleRecipeExpand = (recipeId) => {
+  const toggleRecipeExpand = (recipeId: number) => {
     setExpandedRecipes((prev) => ({
       ...prev,
       [recipeId]: !prev[recipeId],
@@ -17,17 +15,12 @@ export default function RecipeSocialApp() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
-
-      {/* Header */}
       <View style={styles.header}>
         <Image source={require("../../assets/images/receita.jpg")} style={styles.imagem} />
-        <Text style={styles.headerTitle}> Receita das Gurias </Text>
-        <TouchableOpacity>
-          <Feather name="search" size={24} color="#F4a7c1" />
-        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Receita das Gurias</Text>
+        <Feather name="search" size={24} color="#F4a7c1" />
       </View>
 
-      {/* Feed */}
       <ScrollView showsVerticalScrollIndicator={false}>
         {recipeData.map((recipe) => (
           <View key={recipe.id} style={styles.recipeCard}>
@@ -67,7 +60,6 @@ export default function RecipeSocialApp() {
                 <Text style={styles.username}>{recipe.username}</Text> {recipe.description}
               </Text>
 
-              {/* Recipe Section */}
               <View style={styles.recipeContent}>
                 <Text style={styles.recipeContentTitle}>Receita:</Text>
                 <View>
@@ -85,27 +77,12 @@ export default function RecipeSocialApp() {
           </View>
         ))}
       </ScrollView>
-
-      {/* Bottom Navigation */}
-      <View style={styles.bottomNav}>
-        <TouchableOpacity style={styles.navItem}>
-          <Feather name="home" size={24} color="#FF6B00" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Feather name="search" size={24} color="#666" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <View style={styles.addButton}>
-            <Feather name="plus" size={24} color="#FFF" />
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Feather name="user" size={24} color="#666" />
-        </TouchableOpacity>
-      </View>
     </SafeAreaView>
   )
 }
+
+
+
 
 // Sample recipe data
 const recipeData = [
