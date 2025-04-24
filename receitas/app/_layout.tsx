@@ -35,6 +35,16 @@ export default function Layout() {
           ),
         }}
       />
+       <Tabs.Screen
+        name="teste/login"
+        options={{
+          tabBarLabel: "Teste",
+          href: null,
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="plus" size={size} color={color} />
+          ),
+        }}
+      />
     </Tabs>
   )
 }

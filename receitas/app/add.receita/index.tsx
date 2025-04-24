@@ -94,20 +94,8 @@ const AddRecipeScreen = ({ navigation }: any) => {
           onChangeText={setFullRecipe}
         />
         <View style={styles.row}>
-          <TextInput
-            style={[styles.input, styles.halfInput]}
-            placeholder="Dificuldade"
-            placeholderTextColor="#aaa"
-            value={difficulty}
-            onChangeText={setDifficulty}
-          />
-          <TextInput
-            style={[styles.input, styles.halfInput]}
-            placeholder="Porções"
-            placeholderTextColor="#aaa"
-            value={servings}
-            onChangeText={setServings}
-          />
+          
+      
         </View>
 
         <TouchableOpacity onPress={handleSubmit} style={styles.button}>
