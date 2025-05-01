@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     borderColor: '#fbcfe8',
   },
   button: {
-    backgroundColor: '#ec4899', // rosa vibrante
+    backgroundColor: '#ec4899',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 8,

@@ -7,31 +7,26 @@ import {
   TouchableOpacity,
   ScrollView,
   KeyboardAvoidingView,
-  Platform,
 } from 'react-native';
 
-const AddRecipeScreen = ({ navigation }: any) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [image, setImage] = useState('');
-  const [cookTime, setCookTime] = useState('');
-  const [ingredients, setIngredients] = useState('');
-  const [fullRecipe, setFullRecipe] = useState('');
-  const [difficulty, setDifficulty] = useState('');
-  const [servings, setServings] = useState('');
+const Formulario = ({ navigation }: any) => {
+  const [titulo, setTitulo] = useState('');
+  const [descricao, setDescricao] = useState('');
+  const [imagem, setImagem] = useState('');
+  const [tempo, setTempo] = useState('');
+  const [receitaC, setReceitaC] = useState('');
+
 
   const handleSubmit = () => {
     const newRecipe = {
       id: Math.floor(Math.random() * 1000),
       username: "maria_chef",
       userAvatar: "https://randomuser.me/api/portraits/women/65.jpg",
-      image,
-      title,
-      description,
-      fullRecipe,
-      cookTime,
-      difficulty,
-      servings,
+      imagem,
+      titulo,
+      descricao,
+      receitaC,
+      tempo,
       likes: 0,
       comments: 0,
       liked: false,
@@ -43,9 +38,7 @@ const AddRecipeScreen = ({ navigation }: any) => {
 
   return (
     <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
+      style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <Text style={styles.header}>🍰 Nova Receita</Text>
 
@@ -53,48 +46,41 @@ const AddRecipeScreen = ({ navigation }: any) => {
           style={styles.input}
           placeholder="Título da Receita"
           placeholderTextColor="#aaa"
-          value={title}
-          onChangeText={setTitle}
+          value={titulo}
+          onChangeText={setTitulo}
         />
         <TextInput
           style={styles.input}
           placeholder="Descrição"
           placeholderTextColor="#aaa"
-          value={description}
-          onChangeText={setDescription}
+          value={descricao}
+          onChangeText={setDescricao}
         />
         <TextInput
           style={styles.input}
           placeholder="URL da Imagem"
           placeholderTextColor="#aaa"
-          value={image}
-          onChangeText={setImage}
+          value={imagem}
+          onChangeText={setImagem}
         />
         <TextInput
           style={styles.input}
           placeholder="Tempo de Preparo"
           placeholderTextColor="#aaa"
-          value={cookTime}
-          onChangeText={setCookTime}
+          value={tempo}
+          onChangeText={setTempo}
         />
-        <TextInput
-          style={styles.input}
-          placeholder="Ingredientes (separe por vírgulas)"
-          placeholderTextColor="#aaa"
-          value={ingredients}
-          onChangeText={setIngredients}
-        />
+  
         <TextInput
           style={styles.input}
           placeholder="Modo de Preparo"
           placeholderTextColor="#aaa"
           multiline
           numberOfLines={4}
-          value={fullRecipe}
-          onChangeText={setFullRecipe}
+          value={receitaC}
+          onChangeText={setReceitaC}
         />
         <View style={styles.row}>
-          
       
         </View>
 
@@ -122,7 +108,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 30,
     color: '#4E3620',
-    fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif',
+    fontFamily: 'serif',
   },
   input: {
     backgroundColor: '#FFF',
@@ -165,4 +151,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddRecipeScreen;
+export default Formulario;

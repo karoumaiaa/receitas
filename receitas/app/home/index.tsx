@@ -5,11 +5,18 @@ import { Feather, AntDesign } from "@expo/vector-icons"
 export default function Home() {
   const [expandedRecipes, setExpandedRecipes] = useState<Record<number, boolean>>({})
 
-  const toggleRecipeExpand = (recipeId: number) => {
-    setExpandedRecipes((prev) => ({
-      ...prev,
-      [recipeId]: !prev[recipeId],
-    }))
+  const expandir = (recipeId: number) => {
+    setExpandedRecipes((prev) => {
+      const newState = { ...prev }
+  
+      if (prev[recipeId]) {
+        newState[recipeId] = false
+      } else {
+        newState[recipeId] = true
+      }
+  
+      return newState
+    })
   }
 
   return (
@@ -17,13 +24,13 @@ export default function Home() {
       <StatusBar barStyle="dark-content" />
       <View style={styles.header}>
         <Image source={require("../../assets/images/receita.jpg")} style={styles.imagem} />
-        <Text style={styles.headerTitle}>Receita das Gurias</Text>
+        <Text style={styles.headerTitulo}>Receita das Gurias</Text>
         <Feather name="search" size={24} color="#F4a7c1" />
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        {recipeData.map((recipe) => (
-          <View key={recipe.id} style={styles.recipeCard}>
+        {dados.map((recipe) => (
+          <View key={recipe.id} style={styles.receitaCard}>
             <View style={styles.recipeHeader}>
               <View style={styles.userInfo}>
                 <Image source={{ uri: recipe.userAvatar }} style={styles.userAvatar} />
@@ -68,7 +75,7 @@ export default function Home() {
                   ) : (
                     <Text style={styles.recipeText}>{recipe.fullRecipe.substring(0, 100)}...</Text>
                   )}
-                  <TouchableOpacity onPress={() => toggleRecipeExpand(recipe.id)}>
+                  <TouchableOpacity onPress={() => expandir(recipe.id)}>
                     <Text style={styles.seeMoreButton}>{expandedRecipes[recipe.id] ? "Ver menos" : "Ver mais"}</Text>
                   </TouchableOpacity>
                 </View>
@@ -83,9 +90,7 @@ export default function Home() {
 
 
 
-
-// Sample recipe data
-const recipeData = [
+const dados= [
   {
     id: 1,
     username: "maria_chef",
@@ -101,7 +106,6 @@ const recipeData = [
     liked: true,
     saved: true,
     cookTime: "15 min",
-    difficulty: "Fácil",
     servings: 2,
   },
   {
@@ -118,7 +122,6 @@ const recipeData = [
     liked: false,
     saved: false,
     cookTime: "3 horas",
-    difficulty: "Médio",
     servings: 8,
   },
 ]
@@ -142,7 +145,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 15,
   },
-  headerTitle: {
+  headerTitulo: {
     fontSize: 22,
     fontWeight: "bold",
     color: "#F4a7c1",
@@ -175,7 +178,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 4,
   },
-  recipeCard: {
+  receitaCard: {
     marginBottom: 15,
     borderBottomWidth: 1,
     borderBottomColor: "#EFEFEF",

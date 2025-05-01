@@ -64,18 +64,35 @@ export default function Pesquisar() {
               <Text style={styles.name}>{r.strMeal}</Text>
               <Text style={styles.cat}>Categoria: {r.strCategory}</Text>
               <Text style={styles.desc}>
-                {expanded === r.idMeal
-                  ? r.strInstructions
-                  : r.strInstructions.slice(0, 200) + "..."}
+                {(() => {
+                  if (expanded === r.idMeal) {
+                    return r.strInstructions;
+                  } else {
+                    return r.strInstructions.slice(0, 200) + "...";
+                  }
+                })()}
               </Text>
               <TouchableOpacity
                 style={styles.expand}
-                onPress={() => setExpanded(expanded === r.idMeal ? null : r.idMeal)}
+                onPress={() => {
+                  if (expanded === r.idMeal) {
+                    setExpanded(null);
+                  } else {
+                    setExpanded(r.idMeal);
+                  }
+                }}
               >
                 <Text style={styles.expandText}>
-                  {expanded === r.idMeal ? "Ver menos" : "Ver mais"}
+                  {(() => {
+                    if (expanded === r.idMeal) {
+                      return "Ver menos";
+                    } else {
+                      return "Ver mais"; 
+                    }
+                  })()}
                 </Text>
               </TouchableOpacity>
+
             </View>
           ))}
         </ScrollView>
