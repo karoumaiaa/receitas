@@ -4,11 +4,14 @@ import Swal from 'sweetalert2';
 import { auth } from '@/src/firebase.config'
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from "expo-router"
+import { useAuth } from '@/src/AuthContext';
+
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
+  const { login } = useAuth();
 
   const handleLogin = () => {
 
@@ -23,6 +26,7 @@ export default function LoginScreen() {
     
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
+        login();
         const user = userCredential.user;
           Swal.fire({
             title: 'Sucesso!',

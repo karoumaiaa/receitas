@@ -1,14 +1,18 @@
-import { Tabs } from "expo-router"
-import { Feather } from "@expo/vector-icons"
+import { Tabs } from "expo-router";
+import { Feather } from "@expo/vector-icons";
+import { AuthProvider, useAuth } from '@/src/AuthContext';
 
+function TabsLayout() {
+  const { isAuthenticated } = useAuth();
 
-export default function Layout() {
   return (
-    <Tabs screenOptions={{
-      headerShown: false,
-      tabBarActiveTintColor: "#F4a7c1",
-      tabBarInactiveTintColor: "#aaa",
-    }}>
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: "#F4a7c1",
+        tabBarInactiveTintColor: "#aaa",
+      }}
+    >
       <Tabs.Screen
         name="home/index"
         options={{
@@ -26,7 +30,8 @@ export default function Layout() {
             <Feather name="search" size={size} color={color} />
           ),
         }}
-      /> 
+      />
+      {isAuthenticated ? 
       <Tabs.Screen
         name="add.receita/index"
         options={{
@@ -36,16 +41,25 @@ export default function Layout() {
           ),
         }}
       />
-       <Tabs.Screen
-        name="teste/login"
+      :
+      <Tabs.Screen
+        name="login/index"
         options={{
-          tabBarLabel: "Teste",
-          href: null,
+          tabBarLabel:"Login",
           tabBarIcon: ({ color, size }) => (
-            <Feather name="plus" size={size} color={color} />
+            <Feather name="log-in" size={size} color={color} />
           ),
         }}
-      />
+      />}
     </Tabs>
-  )
+    
+  );
+}
+
+export default function Layout() {
+  return (
+    <AuthProvider>
+      <TabsLayout />
+    </AuthProvider>
+  );
 }
