@@ -1,22 +1,44 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import Swal from 'sweetalert2';
 import { auth } from '@/src/firebase.config'
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useRouter } from "expo-router"
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const router = useRouter();
 
   const handleLogin = () => {
+
+    if (!email.trim() || !password.trim()) {
+      Swal.fire({
+        title: 'Campos obrigatórios',
+        text: 'Por favor, preencha o e-mail e a senha.',
+        icon: 'warning',
+        confirmButtonColor: '#be185d',
+      });
+      return; }
+    
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        alert("Login efetuado");
-        // redirecionar ou outra lógica aqui
+          Swal.fire({
+            title: 'Sucesso!',
+            text: 'Login efetuado com sucesso!',
+            icon: 'success',
+            confirmButtonColor: '#be185d',
+          });
+          router.replace('/home')
       })
       .catch((error) => {
-        const errorMessage = error.message;
-        alert("Erro" + errorMessage);
+        Swal.fire({
+          title: 'Erro',
+          text: 'E-mail ou senha incorretos.',
+          icon: 'error',
+          confirmButtonColor: '#be185d',
+        });
       });
   }
   return (
