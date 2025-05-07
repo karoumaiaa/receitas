@@ -20,69 +20,91 @@ export default function LoginScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Bem-vindo!</Text>  
-      <Text style={styles.title}>Para adicionar uma receita, é necessário fazer login.</Text>
+      <Text style={styles.welcome}>Bem-vindo!</Text>
+      <Text style={styles.subtitle}>Faça login para adicionar uma receita.</Text>
 
       <TextInput
         style={styles.input}
-        placeholder="E-mail"
+        placeholder="Digite o seu e-mail"
         keyboardType="email-address"
         autoCapitalize="none"
+        autoComplete='email'
         value={email}
         onChangeText={setEmail}
-        placeholderTextColor="#a1a1aa"
+        placeholderTextColor="#9ca3af"
       />
 
       <TextInput
         style={styles.input}
-        placeholder="Senha"
+        placeholder="Digite a sua senha"
         secureTextEntry
         value={password}
         onChangeText={setPassword}
-        placeholderTextColor="#a1a1aa"
+        placeholderTextColor="#9ca3af"
       />
 
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Entrar</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity>
+        <Text style={styles.forgotPassword}>Esqueceu a senha?</Text>
+      </TouchableOpacity>
     </View>
+
+
+    
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffe4e6', // rosa clarinho
+    backgroundColor: '#f8c9d2', // rosa mais claro
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: 40,
   },
-  title: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    marginBottom: 30,
-    color: '#9d174d', // rosa escuro
+  welcome: {
+    fontSize: 28,
+    fontWeight: '700',
+    color: '#be185d',
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#6b7280',
+    marginBottom: 32,
+    textAlign: 'center',
   },
   input: {
-    width: '100%',
-    height: 45,
+    width: '80%',
+    height: 50,
     backgroundColor: '#fff',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    marginBottom: 12,
+    borderRadius: 10,
+    paddingHorizontal: 16,
+    marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#fbcfe8',
+    borderColor: '#f9a8d4',
+    fontSize: 16,
   },
   button: {
-    backgroundColor: '#ec4899',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    marginTop: 10,
+    backgroundColor: '#f4a7c1',
+    width: '80%',
+    paddingVertical: 14,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 8,
   },
   buttonText: {
     color: '#fff',
+    fontSize: 16,
     fontWeight: '600',
+  },
+  forgotPassword: {
+    color: '#9d174d',
     fontSize: 14,
+    marginTop: 16,
+    textDecorationLine: 'underline',
   },
 });
