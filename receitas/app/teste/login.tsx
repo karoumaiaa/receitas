@@ -1,23 +1,24 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { auth } from '@/src/firebase.config'
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    if (!email || !password) {
-      Alert.alert('Erro', 'Preencha todos os campos.');
-      return;
-    }
-
-    if (email === 'teste@email.com' && password === '123456') {
-      Alert.alert('Sucesso', 'Login realizado com sucesso!');
-    } else {
-      Alert.alert('Erro', 'Credenciais inválidas.');
-    }
-  };
-
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        alert("Login efetuado");
+        // redirecionar ou outra lógica aqui
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        alert("Erro" + errorMessage);
+      });
+  }
   return (
     <View style={styles.container}>
       <Text style={styles.welcome}>Bem-vindo!</Text>
