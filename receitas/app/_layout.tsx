@@ -42,16 +42,21 @@ function TabsLayout() {
         }}
       />
       :
+      
       <Tabs.Screen
         name="login/index"
         options={{
           tabBarLabel:"Login",
           tabBarIcon: ({ color, size }) => (
-            <Feather name="log-in" size={size} color={color} />
+            <Feather name="plus" size={size} color={color} />
           ),
         }}
       />}
+
+      
     </Tabs>
+    
+    
     
   );
 }

@@ -44,6 +44,55 @@ export default function Pesquisar() {
     setLoading(false)
   }
 
+  const renderReceitas = () => {
+    if (loading) {
+      return <ActivityIndicator size="large" color="#F4a7c1" style={{ marginTop: 30 }} />
+    } else {
+      return (
+        <ScrollView contentContainerStyle={{ padding: 16 }}>
+          {receitas.map((r) => (
+            <View key={r.idMeal} style={styles.card}>
+              <Image source={{ uri: r.strMealThumb }} style={styles.img} />
+              <Text style={styles.name}>{r.strMeal}</Text>
+              <Text style={styles.cat}>Categoria: {r.strCategory}</Text>
+
+              <Text style={styles.desc}>
+                {(() => {
+                  if (expanded === r.idMeal) {
+                    return r.strInstructions
+                  } else {
+                    return r.strInstructions.slice(0, 200) + "..."
+                  }
+                })()}
+              </Text>
+
+              <TouchableOpacity
+                style={styles.expand}
+                onPress={() => {
+                  if (expanded === r.idMeal) {
+                    setExpanded(null)
+                  } else {
+                    setExpanded(r.idMeal)
+                  }
+                }}
+              >
+                <Text style={styles.expandText}>
+                  {(() => {
+                    if (expanded === r.idMeal) {
+                      return "Ver menos"
+                    } else {
+                      return "Ver mais"
+                    }
+                  })()}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          ))}
+        </ScrollView>
+      )
+    }
+  }
+
   return (
     <View style={{ flex: 1, backgroundColor: "#fff" }}>
       <View style={styles.header}>
@@ -53,56 +102,10 @@ export default function Pesquisar() {
           <Text style={styles.btnText}>Atualizar</Text>
         </TouchableOpacity>
       </View>
-
-      {loading ? (
-        <ActivityIndicator size="large" color="#F4a7c1" style={{ marginTop: 30 }} />
-      ) : (
-        <ScrollView contentContainerStyle={{ padding: 16 }}>
-          {receitas.map((r) => (
-            <View key={r.idMeal} style={styles.card}>
-              <Image source={{ uri: r.strMealThumb }} style={styles.img} />
-              <Text style={styles.name}>{r.strMeal}</Text>
-              <Text style={styles.cat}>Categoria: {r.strCategory}</Text>
-              <Text style={styles.desc}>
-                {(() => {
-                  if (expanded === r.idMeal) {
-                    return r.strInstructions;
-                  } else {
-                    return r.strInstructions.slice(0, 200) + "...";
-                  }
-                })()}
-              </Text>
-              <TouchableOpacity
-                style={styles.expand}
-                onPress={() => {
-                  if (expanded === r.idMeal) {
-                    setExpanded(null);
-                  } else {
-                    setExpanded(r.idMeal);
-                  }
-                }}
-              >
-                <Text style={styles.expandText}>
-                  {(() => {
-                    if (expanded === r.idMeal) {
-                      return "Ver menos";
-                    } else {
-                      return "Ver mais"; 
-                    }
-                  })()}
-                </Text>
-              </TouchableOpacity>
-
-            </View>
-          ))}
-        </ScrollView>
-      )}
+      {renderReceitas()}
     </View>
   )
 }
-
-
-
 
 const styles = StyleSheet.create({
   header: {
