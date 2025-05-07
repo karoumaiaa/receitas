@@ -75,8 +75,6 @@ const Formulario = ({ navigation }: any) => {
           style={styles.input}
           placeholder="Modo de Preparo"
           placeholderTextColor="#aaa"
-          multiline
-          numberOfLines={4}
           value={receitaC}
           onChangeText={setReceitaC}
         />

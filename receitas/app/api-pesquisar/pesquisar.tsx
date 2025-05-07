@@ -55,8 +55,8 @@ export default function Pesquisar() {
               <Image source={{ uri: r.strMealThumb }} style={styles.img} />
               <Text style={styles.name}>{r.strMeal}</Text>
               <Text style={styles.cat}>Categoria: {r.strCategory}</Text>
-
               <Text style={styles.desc}>
+                
                 {(() => {
                   if (expanded === r.idMeal) {
                     return r.strInstructions
