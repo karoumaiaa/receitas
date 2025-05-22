@@ -31,6 +31,7 @@ function TabsLayout() {
           ),
         }}
       />
+      
       {isAuthenticated ? 
       <Tabs.Screen
         name="add.receita/index"
@@ -42,13 +43,12 @@ function TabsLayout() {
         }}
       />
       :
-      
       <Tabs.Screen
         name="login/index"
         options={{
-          tabBarLabel:"Login",
+          tabBarLabel: "Login",
           tabBarIcon: ({ color, size }) => (
-            <Feather name="plus" size={size} color={color} />
+            <Feather name="log-in" size={size} color={color} />
           ),
         }}
       />}

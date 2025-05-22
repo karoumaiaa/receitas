@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -17,7 +18,7 @@ const Formulario = ({ navigation }: any) => {
   const [receitaC, setReceitaC] = useState('');
 
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const newRecipe = {
       id: Math.floor(Math.random() * 1000),
       username: "maria_chef",
@@ -33,8 +34,39 @@ const Formulario = ({ navigation }: any) => {
       saved: false,
     };
 
-    navigation.navigate('Home', { newRecipe });
+    const receitaTexto = `
+    ==== Receita #${newRecipe.id} ====
+    Título: ${titulo}
+    Descrição: ${descricao}
+    Imagem: ${imagem}
+    Tempo de Preparo: ${tempo}
+    Modo de Preparo: ${receitaC}
+    -------------------------------
+    `;
+
+  try {
+    const receitasAnteriores = await AsyncStorage.getItem('receitas');
+    const novasReceitas = receitasAnteriores
+      ? receitasAnteriores + receitaTexto
+      : receitaTexto;
+
+    await AsyncStorage.setItem('receitas', novasReceitas);
+    console.log('Receita salva com sucesso!');
+
+  } catch (e) {
+    console.error('Erro ao salvar a receita:', e);
+  }
+};
+
+useEffect(() => {
+  const carregarReceitas = async () => {
+    const dados = await AsyncStorage.getItem('receitas');
+    console.log(dados);
   };
+
+  carregarReceitas();
+}, []);
+
 
   return (
     <KeyboardAvoidingView
@@ -70,7 +102,7 @@ const Formulario = ({ navigation }: any) => {
           value={tempo}
           onChangeText={setTempo}
         />
-  
+
         <TextInput
           style={styles.input}
           placeholder="Modo de Preparo"
@@ -79,7 +111,7 @@ const Formulario = ({ navigation }: any) => {
           onChangeText={setReceitaC}
         />
         <View style={styles.row}>
-      
+
         </View>
 
         <TouchableOpacity onPress={handleSubmit} style={styles.button}>
