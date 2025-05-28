@@ -23,7 +23,7 @@ export default function Home() {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
       <View style={styles.header}>
-        <Image source={require("../../assets/images/receita.jpg")} style={styles.imagem} />
+        <Image source={require("../../../assets/images/receita.jpg")} style={styles.imagem} />
         <Text style={styles.headerTitulo}>Receita das Gurias</Text>
         <Feather name="search" size={24} color="#F4a7c1" />
       </View>
