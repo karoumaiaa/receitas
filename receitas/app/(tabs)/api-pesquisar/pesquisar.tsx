@@ -8,38 +8,43 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native"
-import axios from "axios"
 import { Feather } from "@expo/vector-icons"
 
-interface Receita {
-  idMeal: string
-  strMeal: string
-  strMealThumb: string
-  strCategory: string
-  strInstructions: string
+interface ReceitaLocal {
+  id: number
+  titulo: string
+  descricao: string
+  imagem: string
+  tempo: string
+  receitaC: string
+  likes: number
+  comments: number
+  liked: boolean
+  saved: boolean
 }
 
 export default function Pesquisar() {
-  const [receitas, setReceitas] = useState<Receita[]>([])
+  const [receitas, setReceitas] = useState<ReceitaLocal[]>([])
   const [loading, setLoading] = useState(true)
-  const [expanded, setExpanded] = useState<string | null>(null)
+  const [expanded, setExpanded] = useState<number | null>(null)
 
   useEffect(() => {
-    loadReceitas()
+    loadReceitasLocal()
   }, [])
 
-  const loadReceitas = async () => {
+  const loadReceitasLocal = () => {
     setLoading(true)
     try {
-      const reqs = []
-      for (let i = 0; i < 6; i++) {
-        reqs.push(axios.get("https://www.themealdb.com/api/json/v1/1/random.php"))
+      const dadosString = localStorage.getItem("receitas")
+      if (dadosString) {
+        const dados: ReceitaLocal[] = JSON.parse(dadosString)
+        setReceitas(dados)
+      } else {
+        setReceitas([])
       }
-      const res = await Promise.all(reqs)
-      const data: Receita[] = res.map(r => r.data.meals[0])
-      setReceitas(data)
     } catch (err) {
-      console.log("Erro:", err)
+      console.log("Erro ao carregar receitas do localStorage:", err)
+      setReceitas([])
     }
     setLoading(false)
   }
@@ -47,45 +52,38 @@ export default function Pesquisar() {
   const renderReceitas = () => {
     if (loading) {
       return <ActivityIndicator size="large" color="#F4a7c1" style={{ marginTop: 30 }} />
+    } else if (receitas.length === 0) {
+      return <Text style={{ textAlign: "center", marginTop: 30, color: "#777" }}>Nenhuma receita salva.</Text>
     } else {
       return (
         <ScrollView contentContainerStyle={{ padding: 16 }}>
           {receitas.map((r) => (
-            <View key={r.idMeal} style={styles.card}>
-              <Image source={{ uri: r.strMealThumb }} style={styles.img} />
-              <Text style={styles.name}>{r.strMeal}</Text>
-              <Text style={styles.cat}>Categoria: {r.strCategory}</Text>
+            <View key={r.id} style={styles.card}>
+              {r.imagem ? (
+                <Image source={{ uri: r.imagem }} style={styles.img} />
+              ) : (
+                <View style={[styles.img, { justifyContent: "center", alignItems: "center", backgroundColor: "#eee" }]}>
+                  <Text style={{ color: "#999" }}>Sem imagem</Text>
+                </View>
+              )}
+              <Text style={styles.name}>{r.titulo}</Text>
+              <Text style={styles.cat}>Tempo: {r.tempo}</Text>
               <Text style={styles.desc}>
-                
-                {(() => {
-                  if (expanded === r.idMeal) {
-                    return r.strInstructions
-                  } else {
-                    return r.strInstructions.slice(0, 200) + "..."
-                  }
-                })()}
+                {expanded === r.id ? r.receitaC : r.receitaC?.slice(0, 200) + (r.receitaC.length > 200 ? "..." : "")}
               </Text>
 
-              <TouchableOpacity
-                style={styles.expand}
-                onPress={() => {
-                  if (expanded === r.idMeal) {
-                    setExpanded(null)
-                  } else {
-                    setExpanded(r.idMeal)
-                  }
-                }}
-              >
-                <Text style={styles.expandText}>
-                  {(() => {
-                    if (expanded === r.idMeal) {
-                      return "Ver menos"
-                    } else {
-                      return "Ver mais"
-                    }
-                  })()}
-                </Text>
-              </TouchableOpacity>
+              {r.receitaC.length > 200 && (
+                <TouchableOpacity
+                  style={styles.expand}
+                  onPress={() => {
+                    setExpanded(expanded === r.id ? null : r.id)
+                  }}
+                >
+                  <Text style={styles.expandText}>
+                    {expanded === r.id ? "Ver menos" : "Ver mais"}
+                  </Text>
+                </TouchableOpacity>
+              )}
             </View>
           ))}
         </ScrollView>
@@ -96,8 +94,8 @@ export default function Pesquisar() {
   return (
     <View style={{ flex: 1, backgroundColor: "#fff" }}>
       <View style={styles.header}>
-        <Text style={styles.title}>Receitas Aleatórias</Text>
-        <TouchableOpacity style={styles.button} onPress={loadReceitas}>
+        <Text style={styles.title}>Receitas Salvas</Text>
+        <TouchableOpacity style={styles.button} onPress={loadReceitasLocal}>
           <Feather name="rotate-ccw" size={20} color="#fff" />
           <Text style={styles.btnText}>Atualizar</Text>
         </TouchableOpacity>
@@ -135,15 +133,18 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   card: {
-    backgroundColor: "#fff",
-    borderRadius: 8,
-    marginBottom: 20,
-    elevation: 2,
-    overflow: "hidden",
-  },
+  backgroundColor: "#fff",
+  borderRadius: 8,
+  marginBottom: 20,
+  elevation: 2,
+  overflow: "hidden",
+  width: "50%",       // diminui a largura para 90% da tela
+  alignSelf: "center" // centraliza o card horizontalmente
+},
+
   img: {
     width: "100%",
-    height: 200,
+    height: 400,
   },
   name: {
     fontSize: 16,
