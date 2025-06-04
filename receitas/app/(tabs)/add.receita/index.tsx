@@ -38,6 +38,14 @@ const Formulario = () => {
     // Salva de volta no localStorage
     localStorage.setItem('receitas', JSON.stringify(receitasAtualizadas));
 
+    // Resetar os inputs
+    setTitulo("")
+    setDescricao("")
+    setImagem("")
+    setTempo("")
+    setReceitaC("")
+
+    alert("Receita publicada com sucesso!")
     console.log('Receita salva com sucesso!');
   };
 
@@ -80,10 +88,12 @@ const Formulario = () => {
       />
       <TextInput
         style={styles.input}
+        multiline={true}
         placeholder="Modo de Preparo"
         placeholderTextColor="#aaa"
         value={receitaC}
         onChangeText={setReceitaC}
+        
       />
 
       <TouchableOpacity onPress={handleSubmit} style={styles.button}>
