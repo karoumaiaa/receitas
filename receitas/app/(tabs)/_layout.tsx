@@ -1,7 +1,10 @@
 import { Tabs } from "expo-router";
 import { Feather } from "@expo/vector-icons";
+import { useAuth } from "@/src/AuthContext";
 
 export default function TabsLayout() {
+  const { isAuthenticated } = useAuth();
+
   return (
     <Tabs
       screenOptions={{
@@ -29,11 +32,15 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
-        name="login/index"
+        name={isAuthenticated ? "add.receita/index" : "login/index"}
         options={{
-          tabBarLabel: "Login",
+          tabBarLabel: isAuthenticated ? "Adicionar Receita" : "Login",
           tabBarIcon: ({ color, size }) => (
-            <Feather name="user" size={size} color={color} />
+            <Feather
+              name={isAuthenticated ? "plus" : "log-in"}
+              size={size}
+              color={color}
+            />
           ),
         }}
       />
