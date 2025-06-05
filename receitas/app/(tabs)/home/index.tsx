@@ -1,22 +1,24 @@
 import React, { useState } from "react"
-import { View, Text, Image, ScrollView, TouchableOpacity, StyleSheet, SafeAreaView, StatusBar } from "react-native"
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+  StatusBar,
+} from "react-native"
 import { Feather, AntDesign } from "@expo/vector-icons"
 
 export default function Home() {
   const [expandedRecipes, setExpandedRecipes] = useState<Record<number, boolean>>({})
 
   const expandir = (recipeId: number) => {
-    setExpandedRecipes((prev) => {
-      const newState = { ...prev }
-  
-      if (prev[recipeId]) {
-        newState[recipeId] = false
-      } else {
-        newState[recipeId] = true
-      }
-  
-      return newState
-    })
+    setExpandedRecipes((prev) => ({
+      ...prev,
+      [recipeId]: !prev[recipeId],
+    }))
   }
 
   return (
@@ -25,7 +27,11 @@ export default function Home() {
       <View style={styles.header}>
         <Image source={require("../../../assets/images/receita.jpg")} style={styles.imagem} />
         <Text style={styles.headerTitulo}>Receita das Gurias</Text>
-        <Feather name="search" size={24} color="#F4a7c1" />
+
+        <TouchableOpacity style={styles.loginButton}>
+          <Feather name="log-in" size={16} color="#fff" style={{ marginRight: 6 }} />
+          <Text style={styles.loginButtonText}>Login</Text>
+        </TouchableOpacity>
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -76,7 +82,9 @@ export default function Home() {
                     <Text style={styles.recipeText}>{recipe.fullRecipe.substring(0, 100)}...</Text>
                   )}
                   <TouchableOpacity onPress={() => expandir(recipe.id)}>
-                    <Text style={styles.seeMoreButton}>{expandedRecipes[recipe.id] ? "Ver menos" : "Ver mais"}</Text>
+                    <Text style={styles.seeMoreButton}>
+                      {expandedRecipes[recipe.id] ? "Ver menos" : "Ver mais"}
+                    </Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -88,9 +96,7 @@ export default function Home() {
   )
 }
 
-
-
-const dados= [
+const dados = [
   {
     id: 1,
     username: "maria_chef",
@@ -150,33 +156,23 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#F4a7c1",
   },
-  storiesContainer: {
-    height: 100,
-    borderBottomWidth: 1,
-    borderBottomColor: "#EFEFEF",
-  },
-  storyItem: {
+  loginButton: {
+    flexDirection: "row",
     alignItems: "center",
-    marginLeft: 15,
-    marginVertical: 10,
+    backgroundColor: "#F4a7c1",
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 20,
+    shadowColor: "#F4a7c1",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 5,
   },
-  storyRing: {
-    width: 68,
-    height: 68,
-    borderRadius: 34,
-    borderWidth: 2,
-    borderColor: "#FF6B00",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  storyImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-  },
-  storyUsername: {
-    fontSize: 12,
-    marginTop: 4,
+  loginButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 14,
   },
   receitaCard: {
     marginBottom: 15,
@@ -263,34 +259,4 @@ const styles = StyleSheet.create({
     marginTop: 8,
     alignSelf: "flex-end",
   },
-  metaText: {
-    fontSize: 12,
-    color: "#666",
-    marginLeft: 4,
-  },
-  timeAgo: {
-    fontSize: 12,
-    color: "#999",
-  },
-  bottomNav: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    height: 60,
-    borderTopWidth: 1,
-    borderTopColor: "#EFEFEF",
-    backgroundColor: "#FFF",
-  },
-  navItem: {
-    alignItems: "center",
-  },
-  addButton: {
-    backgroundColor: "#FF6B00",
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    justifyContent: "center",
-    alignItems: "center",
-  },
 })
-  
