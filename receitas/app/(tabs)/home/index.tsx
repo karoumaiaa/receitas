@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -8,30 +8,59 @@ import {
   StyleSheet,
   SafeAreaView,
   StatusBar,
-} from "react-native"
-import { Feather, AntDesign } from "@expo/vector-icons"
-
+} from "react-native";
+import { Feather, AntDesign } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import { useAuth } from "../../../src/AuthContext";
 export default function Home() {
-  const [expandedRecipes, setExpandedRecipes] = useState<Record<number, boolean>>({})
+  const [expandedRecipes, setExpandedRecipes] = useState<Record<number, boolean>>({});
+  const { isAuthenticated } = useAuth(); 
+  const router = useRouter();
 
   const expandir = (recipeId: number) => {
     setExpandedRecipes((prev) => ({
       ...prev,
       [recipeId]: !prev[recipeId],
-    }))
-  }
+    }));
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle="dark-content" backgroundColor="#FFFDF9" />
       <View style={styles.header}>
-        <Image source={require("../../../assets/images/receita.jpg")} style={styles.imagem} />
+        <Image
+          source={require("../../../assets/images/receita.jpg")}
+          style={styles.imagem}
+        />
         <Text style={styles.headerTitulo}>Receita das Gurias</Text>
 
-        <TouchableOpacity style={styles.loginButton}>
-          <Feather name="log-in" size={16} color="#fff" style={{ marginRight: 6 }} />
-          <Text style={styles.loginButtonText}>Login</Text>
-        </TouchableOpacity>
+        {!isAuthenticated ? (
+          <TouchableOpacity
+            style={styles.loginButton}
+            onPress={() => router.push("/login")}
+          >
+            <Feather
+              name="log-in"
+              size={16}
+              color="#fff"
+              style={{ marginRight: 6 }}
+            />
+            <Text style={styles.loginButtonText}>Login</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={styles.addButton}
+            onPress={() => router.push("/add.receita")}
+          >
+            <Feather
+              name="plus"
+              size={16}
+              color="#fff"
+              style={{ marginRight: 6 }}
+            />
+            <Text style={styles.addButtonText}>Adicionar Receita</Text>
+          </TouchableOpacity>
+        )}
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -39,7 +68,10 @@ export default function Home() {
           <View key={recipe.id} style={styles.receitaCard}>
             <View style={styles.recipeHeader}>
               <View style={styles.userInfo}>
-                <Image source={{ uri: recipe.userAvatar }} style={styles.userAvatar} />
+                <Image
+                  source={{ uri: recipe.userAvatar }}
+                  style={styles.userAvatar}
+                />
                 <View>
                   <Text style={styles.username}>{recipe.username}</Text>
                   <Text style={styles.location}>{recipe.location}</Text>
@@ -55,14 +87,22 @@ export default function Home() {
             <View style={styles.recipeActions}>
               <View style={styles.leftActions}>
                 <TouchableOpacity style={styles.actionButton}>
-                  <AntDesign name="heart" size={24} color={recipe.liked ? "#FF3B30" : "#333"} />
+                  <AntDesign
+                    name="heart"
+                    size={24}
+                    color={recipe.liked ? "#FF3B30" : "#333"}
+                  />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.actionButton}>
                   <Feather name="message-circle" size={24} color="#333" />
                 </TouchableOpacity>
               </View>
               <TouchableOpacity>
-                <Feather name="bookmark" size={24} color={recipe.saved ? "#007AFF" : "#333"} />
+                <Feather
+                  name="bookmark"
+                  size={24}
+                  color={recipe.saved ? "#007AFF" : "#333"}
+                />
               </TouchableOpacity>
             </View>
 
@@ -79,7 +119,9 @@ export default function Home() {
                   {expandedRecipes[recipe.id] ? (
                     <Text style={styles.recipeText}>{recipe.fullRecipe}</Text>
                   ) : (
-                    <Text style={styles.recipeText}>{recipe.fullRecipe.substring(0, 100)}...</Text>
+                    <Text style={styles.recipeText}>
+                      {recipe.fullRecipe.substring(0, 100)}...
+                    </Text>
                   )}
                   <TouchableOpacity onPress={() => expandir(recipe.id)}>
                     <Text style={styles.seeMoreButton}>
@@ -93,7 +135,7 @@ export default function Home() {
         ))}
       </ScrollView>
     </SafeAreaView>
-  )
+  );
 }
 
 const dados = [
@@ -108,11 +150,8 @@ const dados = [
     fullRecipe:
       "Ingredientes:\n- 1 manga madura\n- 1 abacate\n- 200g de folhas verdes variadas\n- 1 cebola roxa pequena\n- 1/2 xícara de nozes\n- Suco de 1 limão\n- 2 colheres de sopa de azeite de oliva\n- Sal e pimenta a gosto\n\nModo de Preparo:\n1. Corte a manga e o abacate em cubos.\n2. Fatie a cebola roxa finamente.\n3. Em uma tigela grande, misture as folhas verdes, manga, abacate, cebola e nozes.\n4. Para o molho, misture o suco de limão, azeite, sal e pimenta.\n5. Regue a salada com o molho e sirva imediatamente.",
     likes: 1243,
-    comments: 89,
     liked: true,
     saved: true,
-    cookTime: "15 min",
-    servings: 2,
   },
   {
     id: 2,
@@ -123,19 +162,17 @@ const dados = [
     title: "Feijoada Tradicional",
     description: "Receita clássica brasileira, perfeita para reunir a família no fim de semana!",
     fullRecipe:
-      "Ingredientes:\n- 1kg de feijão preto\n- 300g de carne seca\n- 300g de costela de porco\n- 300g de lombo de porco\n- 200g de linguiça calabresa\n- 200g de paio\n- 2 cebolas grandes\n- 4 dentes de alho\n- 3 folhas de louro\n- Óleo, sal e pimenta a gosto\n\nModo de Preparo:\n1. Deixe o feijão e as carnes de molho separadamente por 12 horas, trocando a água das carnes algumas vezes.\n2. Cozinhe o feijão na panela de pressão por cerca de 30 minutos.\n3. Em outra panela, refogue a cebola e o alho no óleo.\n4. Acrescente as carnes cortadas em pedaços e refogue.\n5. Junte o feijão cozido, as folhas de louro, sal e pimenta.\n6. Cozinhe em fogo baixo por mais 30 minutos.\n7. Sirva com arroz branco, couve refogada, laranja e farofa.",
+      "Ingredientes:\n- 1kg de feijão preto\n- 300g de carne seca\n- 300g de costela de porco\n- 300g de lombo de porco\n- 200g de linguiça calabresa\n- 200g de paio\n- 2 cebolas grandes\n- 4 dentes de alho\n- 3 folhas de louro\n- Óleo, sal e pimenta a gosto\n\nModo de Preparo:\n1. Deixe o feijão e as carnes de molho separadamente por 12 horas.\n2. Cozinhe o feijão na pressão por 30 minutos.\n3. Refogue cebola e alho.\n4. Acrescente as carnes e depois o feijão.\n5. Cozinhe por mais 30 minutos.\n6. Sirva com arroz, couve e farofa.",
     likes: 2568,
     liked: false,
     saved: false,
-    cookTime: "3 horas",
-    servings: 8,
   },
-]
+];
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#FFFDF9",
   },
   header: {
     flexDirection: "row",
@@ -170,6 +207,24 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   loginButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 14,
+  },
+  addButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#F4a7c1",
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 20,
+    shadowColor: "#F4a7c1",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 5,
+  },
+  addButtonText: {
     color: "#fff",
     fontWeight: "bold",
     fontSize: 14,
@@ -229,34 +284,26 @@ const styles = StyleSheet.create({
   },
   recipeTitle: {
     fontWeight: "bold",
-    fontSize: 16,
+    fontSize: 18,
     marginBottom: 5,
   },
   recipeDescription: {
-    fontSize: 14,
-    lineHeight: 20,
-    marginBottom: 10,
+    marginBottom: 8,
   },
   recipeContent: {
     marginTop: 10,
-    padding: 10,
-    backgroundColor: "#F9F9F9",
-    borderRadius: 8,
   },
   recipeContentTitle: {
     fontWeight: "bold",
-    fontSize: 16,
-    marginBottom: 8,
-    color: "#F4a7c1",
+    marginBottom: 4,
   },
   recipeText: {
     fontSize: 14,
     lineHeight: 20,
   },
   seeMoreButton: {
+    marginTop: 5,
     color: "#F4a7c1",
     fontWeight: "bold",
-    marginTop: 8,
-    alignSelf: "flex-end",
   },
-})
+});

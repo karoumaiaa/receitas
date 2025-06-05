@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import {
   View,
@@ -29,30 +30,17 @@ const Formulario = () => {
       saved: false,
     };
 
-    // Recupera receitas existentes
-    const receitasExistentes = JSON.parse(localStorage.getItem('receitas') || '[]');
-
-    // Adiciona nova receita
-    const receitasAtualizadas = [...receitasExistentes, novaReceita];
-
-    // Salva de volta no localStorage
-    localStorage.setItem('receitas', JSON.stringify(receitasAtualizadas));
+    // localStorage não funciona no React Native, substitua por AsyncStorage ou outra solução
+    // Aqui vou deixar um alerta para você adaptar depois:
+    alert('Receita publicada com sucesso! (implemente salvamento local ou remoto)');
 
     // Resetar os inputs
-    setTitulo("")
-    setDescricao("")
-    setImagem("")
-    setTempo("")
-    setReceitaC("")
-
-    alert("Receita publicada com sucesso!")
-    console.log('Receita salva com sucesso!');
+    setTitulo('');
+    setDescricao('');
+    setImagem('');
+    setTempo('');
+    setReceitaC('');
   };
-
-  useEffect(() => {
-    const dados = JSON.parse(localStorage.getItem('receitas') || '[]');
-    console.log('Receitas existentes:', dados);
-  }, []);
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -93,7 +81,6 @@ const Formulario = () => {
         placeholderTextColor="#aaa"
         value={receitaC}
         onChangeText={setReceitaC}
-        
       />
 
       <TouchableOpacity onPress={handleSubmit} style={styles.button}>

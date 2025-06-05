@@ -20,7 +20,7 @@ export default function TabsLayout() {
           tabBarIcon: ({ color, size }) => (
             <Feather name="home" size={size} color={color} />
           ),
-        }}
+    }}
       />
       <Tabs.Screen
         name="api-pesquisar/pesquisar"
@@ -28,22 +28,30 @@ export default function TabsLayout() {
           tabBarLabel: "Pesquisar",
           tabBarIcon: ({ color, size }) => (
             <Feather name="search" size={size} color={color} />
+         ), 
+    }}
+      />
+      <Tabs.Screen
+        name="add.receita/index"
+        options={{
+          href: null, 
+          tabBarLabel: "Adicionar Receita",
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="plus" size={size} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name={isAuthenticated ? "add.receita/index" : "login/index"}
+        name="login/index"
         options={{
-          tabBarLabel: isAuthenticated ? "Adicionar Receita" : "Login",
+          href: null, 
+          tabBarLabel: "Login",
           tabBarIcon: ({ color, size }) => (
-            <Feather
-              name={isAuthenticated ? "plus" : "log-in"}
-              size={size}
-              color={color}
-            />
+            <Feather name="log-in" size={size} color={color} />
           ),
         }}
       />
+
     </Tabs>
   );
 }
