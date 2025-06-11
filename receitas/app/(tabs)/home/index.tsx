@@ -17,11 +17,22 @@ export default function Home() {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
   const [receitas, setReceitas] = useState<any[]>([]);
+  const nomesAleatorios = ["maria_chef", "joana_cook", "ana_receitas", "chef_lu", "sabores_da_lu", "Chef_ana", "Cozinha_top", "Receitas_da_vó", "Amante_da_culinaria", "Duda_receitas"];
+  const locaisAleatorios = ["Curitiba, Paraná", "Salvador, Bahia", "Recife, Pernambuco", "Florianópolis, Santa Catarina", "Porto Velho, Rondônia"];
+   const avatares = [
+    "https://randomuser.me/api/portraits/women/10.jpg",
+    "https://randomuser.me/api/portraits/women/20.jpg",
+    "https://randomuser.me/api/portraits/women/30.jpg",
+    "https://randomuser.me/api/portraits/women/40.jpg",
+    "https://randomuser.me/api/portraits/women/50.jpg",
+  ];
+
+  const sortear = (lista: string[]) => lista[Math.floor(Math.random() * lista.length)];
 
   const listarReceitas = (): any[] => {
     return JSON.parse(localStorage.getItem('receitas') || '[]');
   };
-  
+
   useEffect(() => {
     const dados2 = listarReceitas();
     setReceitas(dados2);
@@ -76,17 +87,18 @@ export default function Home() {
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        {dados.map((recipe) => (
+        {receitas.map((recipe) => (
           <View key={recipe.id} style={styles.receitaCard}>
             <View style={styles.recipeHeader}>
               <View style={styles.userInfo}>
                 <Image
-                  source={{ uri: recipe.userAvatar }}
+                  source={{ uri: recipe.userAvatar || sortear(avatares) }}
                   style={styles.userAvatar}
                 />
                 <View>
-                  <Text style={styles.username}>{recipe.username}</Text>
-                  <Text style={styles.location}>{recipe.location}</Text>
+                  <Text style={styles.username}>{recipe.username || sortear(nomesAleatorios)}</Text>
+                  <Text style={styles.location}>{recipe.location || sortear(locaisAleatorios)}</Text>
+
                 </View>
               </View>
               <TouchableOpacity>
@@ -94,7 +106,7 @@ export default function Home() {
               </TouchableOpacity>
             </View>
 
-            <Image source={{ uri: recipe.image }} style={styles.recipeImage} />
+            <Image source={{ uri: recipe.imagem }} style={styles.recipeImage} />
 
             <View style={styles.recipeActions}>
               <View style={styles.leftActions}>
@@ -120,19 +132,19 @@ export default function Home() {
 
             <View style={styles.recipeInfo}>
               <Text style={styles.likes}>{recipe.likes} likes</Text>
-              <Text style={styles.recipeTitle}>{recipe.title}</Text>
+              <Text style={styles.recipeTitle}>{recipe.titulo}</Text>
               <Text style={styles.recipeDescription}>
-                <Text style={styles.username}>{recipe.username}</Text> {recipe.description}
+                <Text style={styles.username}>{recipe.username || "usuario_local"}</Text> {recipe.descricao}
               </Text>
 
               <View style={styles.recipeContent}>
                 <Text style={styles.recipeContentTitle}>Receita:</Text>
                 <View>
                   {expandedRecipes[recipe.id] ? (
-                    <Text style={styles.recipeText}>{recipe.fullRecipe}</Text>
+                    <Text style={styles.recipeText}>{recipe.receitaC}</Text>
                   ) : (
                     <Text style={styles.recipeText}>
-                      {recipe.fullRecipe.substring(0, 100)}...
+                      {recipe.receitaC.substring(0, 100)}...
                     </Text>
                   )}
                   <TouchableOpacity onPress={() => expandir(recipe.id)}>
@@ -146,6 +158,7 @@ export default function Home() {
           </View>
         ))}
       </ScrollView>
+
     </SafeAreaView>
   );
 }
@@ -242,6 +255,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   receitaCard: {
+    width: "50%",
+    alignSelf: "center",
     marginBottom: 15,
     borderBottomWidth: 1,
     borderBottomColor: "#EFEFEF",
