@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -14,8 +14,18 @@ import { useRouter } from "expo-router";
 import { useAuth } from "../../../src/AuthContext";
 export default function Home() {
   const [expandedRecipes, setExpandedRecipes] = useState<Record<number, boolean>>({});
-  const { isAuthenticated } = useAuth(); 
+  const { isAuthenticated } = useAuth();
   const router = useRouter();
+  const [receitas, setReceitas] = useState<any[]>([]);
+
+  const listarReceitas = (): any[] => {
+    return JSON.parse(localStorage.getItem('receitas') || '[]');
+  };
+  
+  useEffect(() => {
+    const dados2 = listarReceitas();
+    setReceitas(dados2);
+  }, []);
 
   const expandir = (recipeId: number) => {
     setExpandedRecipes((prev) => ({
@@ -23,6 +33,8 @@ export default function Home() {
       [recipeId]: !prev[recipeId],
     }));
   };
+
+
 
   return (
     <SafeAreaView style={styles.container}>

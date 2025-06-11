@@ -30,9 +30,11 @@ const Formulario = () => {
       saved: false,
     };
 
-    // localStorage não funciona no React Native, substitua por AsyncStorage ou outra solução
-    // Aqui vou deixar um alerta para você adaptar depois:
-    alert('Receita publicada com sucesso! (implemente salvamento local ou remoto)');
+    const receitasExistentes = JSON.parse(localStorage.getItem('receitas') || '[]');
+    const novasReceitas = [...receitasExistentes, novaReceita];
+    localStorage.setItem('receitas', JSON.stringify(novasReceitas));
+
+    alert('Receita publicada com sucesso!');
 
     // Resetar os inputs
     setTitulo('');
