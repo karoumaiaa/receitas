@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     elevation: 2,
     overflow: "hidden",
-    width: "50%",       // diminui a largura para 90% da tela
+    width: "50%",       
     alignSelf: "center"
   },
   img: {
